@@ -33,10 +33,6 @@ export default class PickerView extends React.Component {
             onListScroll === null || onListScroll === void 0 ? void 0 : onListScroll(values, results);
         };
         const { defaultValue, options } = props;
-        /**
-         * 初始化 values 和 results,
-         * defaultValue 默认选中的项的值列表, 若不是数组 设为默认选中每列第一项
-         */
         const initValue = Array.isArray(defaultValue) ? defaultValue : [];
         this.values = options.map((item, i) => {
             var _a;
@@ -45,12 +41,6 @@ export default class PickerView extends React.Component {
             }
             return (_a = item[0]) === null || _a === void 0 ? void 0 : _a.value;
         });
-        /**
-         * 初始化results 根据 options 的长度设置results的长度,
-         * options 是一个2维数组, 其每个数组元素对应一列, 每一列的选中项对应results相对位置的元素
-         * 因此results的长度与 options 的长度一致
-         * 然后根据 defaultValue 的值从options中查询对应项填充到 results 中, 差不多的项填充为 null
-         */
         this.results = new Array(options.length).fill(null).map((v, i) => {
             if (Array.isArray(options[i])) {
                 return findItem(this.values[i], options[i]);

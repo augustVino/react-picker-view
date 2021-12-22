@@ -17,7 +17,6 @@ const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_H
             mass: 0.8
         }
     }));
-    // 记录拖拽状态
     const draggingRef = useRef(false);
     useLayoutEffect(() => {
         if (draggingRef.current)
@@ -26,13 +25,11 @@ const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_H
             return;
         const finalPosition = current * -itemHeight;
         api.start({ y: finalPosition, immediate: y.goal !== finalPosition });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [current, list]);
     useLayoutEffect(() => {
         if (!list[current]) {
             handleChange(0);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [list, current]);
     useLayoutEffect(() => {
         listItemHeight && setItemHeight(listItemHeight);

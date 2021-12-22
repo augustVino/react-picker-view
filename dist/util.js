@@ -22,13 +22,11 @@ export function bound(position, min, max) {
 export function rubberband(distance, dimension, constant) {
     return (distance * dimension * constant) / (dimension + constant * distance);
 }
-// eslint-disable-next-line max-params
 export function rubberbandIfOutOfBounds(position, min, max, dimension, constant = 0.15) {
     if (constant === 0)
         return bound(position, min, max);
     if (position < min)
         return -rubberband(min - position, dimension, constant) + min;
-    // eslint-disable-next-line no-implicit-coercion
     if (position > max)
         return +rubberband(position - max, dimension, constant) + max;
     return position;

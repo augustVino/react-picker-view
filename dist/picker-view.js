@@ -22,25 +22,19 @@ const PickerViewUI = ({ prefix = PREFIX_CLS, title = '请选择', options, defau
         return indexOf(curValue, option, -1) >= 0 ? curValue : option[0].value;
     });
     const [values, setValues] = useState(curValues);
-    // 如果传入的数据有变化, 检查result在新数据里是否有效, 将无效数据替换成有效数据
     useEffect(() => {
         setValues(options.map((option, i) => {
             return indexOf(values[i], option, -1) >= 0 ? values[i] : option[0].value;
         }));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [...options]);
-    // 同步value变化, 让组件可控
     useEffect(() => {
-        // 如果新value有值, 判断新的value值是否有效, 如果无效使用对应option的第一个值替换
         if (value !== undefined) {
             const nvs = Array.isArray(value) ? value : [value];
             setValues(options.map((option, i) => (indexOf(nvs[i], option, -1) >= 0 ? nvs[i] : option[0].value)));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
     const handleCancel = () => {
         onCancel === null || onCancel === void 0 ? void 0 : onCancel();
-        // 取消的时候还原原来的值
         if (value === undefined) {
             setValues(curValues);
         }
@@ -48,7 +42,6 @@ const PickerViewUI = ({ prefix = PREFIX_CLS, title = '请选择', options, defau
     const handleOk = () => {
         onOk === null || onOk === void 0 ? void 0 : onOk();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const result = useMemo(() => values.map((v, i) => indexOf(v, options[i])), [values]);
     const handleListChange = (index, i) => {
         const newValues = [...values];
