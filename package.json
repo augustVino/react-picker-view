@@ -1,11 +1,16 @@
 {
   "name": "react-picker-view",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "基于antd-mobile(v5.0.0-beta.19)实现的自定义Picker",
-  "main": "index.tsx",
+  "main": "dist/index.js",
+  "typings": "types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "dist/*",
+    "types"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/augustVino/react-picker-view.git"

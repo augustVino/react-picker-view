@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es6",
+    "lib": ["es2018", "dom"],
+    "jsx": "react",
+    "declaration": true,
+    "sourceMap": false,
+    "outDir": "./dist",
+    "declarationDir": "./types",
+    "allowJs": false,
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "allowSyntheticDefaultImports": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@root/*": ["./*"]
+    }
+  },
+  "include": ["src", "types"],
+  "exclude": ["node_modules"]
+}
