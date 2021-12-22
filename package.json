@@ -1,6 +1,6 @@
 {
   "name": "react-picker-view",
-  "version": "1.0.2",
+  "version": "1.0.3-beta.0",
   "description": "基于antd-mobile(v5.0.0-beta.19)实现的自定义Picker",
   "main": "dist/index.js",
   "typings": "types/index.d.ts",
@@ -21,7 +21,8 @@
   ],
   "dependencies": {
     "@react-spring/web": "^9.3.1",
-    "@use-gesture/react": "^10.2.4"
+    "@use-gesture/react": "^10.2.4",
+    "lodash.isequal": "^4.5.0"
   },
   "peerDependencies": {
     "antd-mobile": "*",

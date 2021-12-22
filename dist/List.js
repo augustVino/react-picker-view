@@ -2,10 +2,10 @@ import React, { memo, useRef, useLayoutEffect, useState } from 'react';
 import classnames from 'classnames';
 import { useSpring, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash.isEqual';
 import { PREFIX_CLS, bound, rubberbandIfOutOfBounds } from './util';
 const ITEM_HEIGHT = 50;
-const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_HEIGHT, listClass = '', onChange }) => {
+const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_HEIGHT, listClass = '', onChange, }) => {
     const [itemHeight, setItemHeight] = useState(listItemHeight);
     function handleChange(index) {
         onChange(index);
@@ -14,8 +14,8 @@ const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_H
         from: { y: 0 },
         config: {
             tension: 400,
-            mass: 0.8
-        }
+            mass: 0.8,
+        },
     }));
     const draggingRef = useRef(false);
     useLayoutEffect(() => {
@@ -52,14 +52,14 @@ const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_H
         else {
             const position = state.offset[1];
             api.start({
-                y: rubberbandIfOutOfBounds(position, min, max, itemHeight * 50, 0.2)
+                y: rubberbandIfOutOfBounds(position, min, max, itemHeight * 50, 0.2),
             });
         }
     }, {
         axis: 'y',
         from: () => [0, y.get()],
         filterTaps: true,
-        pointer: { touch: true }
+        pointer: { touch: true },
     });
     return (React.createElement("div", { className: classnames(`${prefix}-column`, listClass) },
         React.createElement(animated.div, Object.assign({ className: `${prefix}-column-wheel` }, bind(), { style: { y }, "aria-hidden": true }), list.map((item, k) => {
@@ -71,7 +71,7 @@ const List = memo(({ prefix = PREFIX_CLS, list, current, listItemHeight = ITEM_H
             return (React.createElement("div", { key: `list-item-${k}-${item.value}`, className: classnames(`${prefix}-column-item`, {
                     [`${prefix}-column-item-active`]: k === current,
                     [`${prefix}-column-item-prev`]: k === current - 1,
-                    [`${prefix}-column-item-next`]: k === current + 1
+                    [`${prefix}-column-item-next`]: k === current + 1,
                 }), onClick: handleClick, "aria-hidden": !selected, "aria-label": selected ? 'active' : '' }, item.label));
         }))));
 }, (prev, next) => {

@@ -1,32 +1,32 @@
-import React, { memo, useRef, useLayoutEffect, useState } from 'react'
-import classnames from 'classnames'
-import { useSpring, animated } from '@react-spring/web'
-import { useDrag } from '@use-gesture/react'
-import isEqual from 'lodash/isEqual'
-import { PREFIX_CLS, bound, rubberbandIfOutOfBounds } from './util'
+import React, { memo, useRef, useLayoutEffect, useState } from 'react';
+import classnames from 'classnames';
+import { useSpring, animated } from '@react-spring/web';
+import { useDrag } from '@use-gesture/react';
+import isEqual from 'lodash.isEqual';
+import { PREFIX_CLS, bound, rubberbandIfOutOfBounds } from './util';
 
 export interface Item {
-  label: string
-  value: any
+  label: string;
+  value: any;
 }
 
 export interface IListPraviteProps {
-  prefix?: string
+  prefix?: string;
   // 条目高度
-  listItemHeight?: number
+  listItemHeight?: number;
   // 自定义class
-  listClass?: string
+  listClass?: string;
 }
 
 interface IProps extends IListPraviteProps {
   // 当前列数据
-  list: Item[]
+  list: Item[];
   // 当前选中项的index
-  current: number
-  onChange: Function
+  current: number;
+  onChange: Function;
 }
 
-const ITEM_HEIGHT = 50
+const ITEM_HEIGHT = 50;
 
 const List = memo<IProps>(
   ({
@@ -35,82 +35,96 @@ const List = memo<IProps>(
     current,
     listItemHeight = ITEM_HEIGHT,
     listClass = '',
-    onChange
+    onChange,
   }) => {
-    const [itemHeight, setItemHeight] = useState<number>(listItemHeight)
+    const [itemHeight, setItemHeight] = useState<number>(listItemHeight);
 
     function handleChange(index: number) {
-      onChange(index)
+      onChange(index);
     }
 
     const [{ y }, api] = useSpring(() => ({
       from: { y: 0 },
       config: {
         tension: 400,
-        mass: 0.8
-      }
-    }))
+        mass: 0.8,
+      },
+    }));
     // 记录拖拽状态
-    const draggingRef = useRef(false)
+    const draggingRef = useRef(false);
 
     useLayoutEffect(() => {
-      if (draggingRef.current) return
-      if (current < 0) return
-      const finalPosition = current * -itemHeight
-      api.start({ y: finalPosition, immediate: y.goal !== finalPosition })
+      if (draggingRef.current) return;
+      if (current < 0) return;
+      const finalPosition = current * -itemHeight;
+      api.start({ y: finalPosition, immediate: y.goal !== finalPosition });
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [current, list])
+    }, [current, list]);
 
     useLayoutEffect(() => {
       if (!list[current]) {
-        handleChange(0)
+        handleChange(0);
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [list, current])
+    }, [list, current]);
 
     useLayoutEffect(() => {
-      listItemHeight && setItemHeight(listItemHeight)
-    }, [listItemHeight, setItemHeight])
+      listItemHeight && setItemHeight(listItemHeight);
+    }, [listItemHeight, setItemHeight]);
 
     function scrollSelect(index: number) {
-      const finalPosition = index * -itemHeight
-      api.start({ y: finalPosition })
-      handleChange(index)
+      const finalPosition = index * -itemHeight;
+      api.start({ y: finalPosition });
+      handleChange(index);
     }
 
     const bind = useDrag(
       (state) => {
-        draggingRef.current = true
-        const min = -((list.length - 1) * itemHeight)
-        const max = 0
+        draggingRef.current = true;
+        const min = -((list.length - 1) * itemHeight);
+        const max = 0;
         if (state.last) {
-          draggingRef.current = false
-          const position = state.offset[1] + state.velocity[1] * state.direction[1] * 50
-          const targetIndex = -Math.round(bound(position, min, max) / itemHeight)
-          scrollSelect(targetIndex)
+          draggingRef.current = false;
+          const position =
+            state.offset[1] + state.velocity[1] * state.direction[1] * 50;
+          const targetIndex = -Math.round(
+            bound(position, min, max) / itemHeight
+          );
+          scrollSelect(targetIndex);
         } else {
-          const position = state.offset[1]
+          const position = state.offset[1];
           api.start({
-            y: rubberbandIfOutOfBounds(position, min, max, itemHeight * 50, 0.2)
-          })
+            y: rubberbandIfOutOfBounds(
+              position,
+              min,
+              max,
+              itemHeight * 50,
+              0.2
+            ),
+          });
         }
       },
       {
         axis: 'y',
         from: () => [0, y.get()],
         filterTaps: true,
-        pointer: { touch: true }
+        pointer: { touch: true },
       }
-    )
+    );
 
     return (
       <div className={classnames(`${prefix}-column`, listClass)}>
-        <animated.div className={`${prefix}-column-wheel`} {...bind()} style={{ y }} aria-hidden>
+        <animated.div
+          className={`${prefix}-column-wheel`}
+          {...bind()}
+          style={{ y }}
+          aria-hidden
+        >
           {list.map((item, k) => {
-            const selected = current === k
+            const selected = current === k;
             function handleClick() {
-              draggingRef.current = false
-              scrollSelect(k)
+              draggingRef.current = false;
+              scrollSelect(k);
             }
             return (
               <div
@@ -118,7 +132,7 @@ const List = memo<IProps>(
                 className={classnames(`${prefix}-column-item`, {
                   [`${prefix}-column-item-active`]: k === current,
                   [`${prefix}-column-item-prev`]: k === current - 1,
-                  [`${prefix}-column-item-next`]: k === current + 1
+                  [`${prefix}-column-item-next`]: k === current + 1,
                 })}
                 onClick={handleClick}
                 aria-hidden={!selected}
@@ -126,20 +140,20 @@ const List = memo<IProps>(
               >
                 {item.label}
               </div>
-            )
+            );
           })}
         </animated.div>
       </div>
-    )
+    );
   },
   (prev, next) => {
-    if (prev.current !== next.current) return false
-    if (prev.listItemHeight !== next.listItemHeight) return false
-    if (prev.onChange !== next.onChange) return false
+    if (prev.current !== next.current) return false;
+    if (prev.listItemHeight !== next.listItemHeight) return false;
+    if (prev.onChange !== next.onChange) return false;
     if (!isEqual(prev.list, next.list)) {
-      return false
+      return false;
     }
-    return true
+    return true;
   }
-)
-export default List
+);
+export default List;
